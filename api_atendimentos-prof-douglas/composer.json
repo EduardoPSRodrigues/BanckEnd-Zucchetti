@@ -1,0 +1,15 @@
+{
+    "name": "api/atendimento",
+    "autoload": {
+        "psr-4": {
+            "Api\\Atendimento\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "EduardoPSRodrigues",
+            "email": "eduardo_rodrigues10@estudante.sesisenai.org.br"
+        }
+    ],
+    "require": {}
+}

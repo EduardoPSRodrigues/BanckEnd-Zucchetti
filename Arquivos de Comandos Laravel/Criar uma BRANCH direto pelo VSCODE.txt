@@ -1,0 +1,2 @@
+Abra o projeto no VSCODE, abra o terminal e digite o comando 
+git checkout -b (nome da branch)

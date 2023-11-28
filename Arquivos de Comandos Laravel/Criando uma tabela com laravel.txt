@@ -1,0 +1,27 @@
+Abra o terminal e digite o comando php artisan make:migration create_pets_table
+
+Um novo arquivo será criado dentro da pasta database/migration
+Nesse novo arquivo terá duas funções (up que é para criar uma tabela e down que é para deletar a tabela)
+
+Vale ressaltar que o comando $table->timestamps(); cria duas tabelas automaticamente, uma tabela é o created_at e a outra é o updated_at
+
+A pasta migration fica o histórico das tabelas, sendo que se desejar criar novas tabelas dentro da pets por exemplo, usarei o comando para criar uma nova migration
+
+Para criar a tabela dentro do banco de dados, se faz necessário editar o UP
+
+ public function up(): void
+    {
+        Schema::create('pets', function (Blueprint $table) {
+            $table->id();
+            $table->string('name', 150); //se não passar nada já vem not null
+            $table->integer('age')->nullable(); //pode ser vazio
+            $table->float('weight')->nullable();
+            $table->enum('size', ['SMALL', 'MEDIUM', 'LARGE', 'EXTRA_LARGE']);
+            $table->timestamps();
+        });
+    }
+
+Depois abrir o terminar e digitar o comando php artisan migrate 
+para ser executado o codigo e criar as tabelas e colunas
+
+Para eu deletar a tabela no banco de dados, basta eu digitar php artisan migrate:rollback

@@ -1,0 +1,47 @@
+Abra o Powershell como administrador e digite o comando 
+docker run --name pets_laravel -e POSTGRESQL_USERNAME=admin -e POSTGRESQL_PASSWORD=admin -e POSTGRESQL_DATABASE=api_pets_laravel -p 5432:5432 bitnami/postgresql
+
+Abra o projeto no VSCODE
+Vai na pasta config, depois no arquivo database.php, abra o arquivo 
+Por padrão o comando está dessa forma
+'default' => env('DB_CONNECTION', 'mysql'),
+
+Trocar o 'mysql' por 'pgsql'
+
+O arquivo .env nao chega a ir para o GitHub, pois ele tem informações muito importantes.
+Nesse arquivo iremos colocar o nome do usuario e a senha de acesso para o banco de dados
+
+Por padrão ele vem assim
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=root
+DB_PASSWORD=
+
+Como estamos configurando para o banco postgree, iremos alterar algumas informações
+
+DB_CONNECTION=pgsql (nome do banco de dados)
+DB_HOST=127.0.0.1
+DB_PORT=5432 (porta de acesso do banco de dados para usar no Docker)
+DB_DATABASE=api_pets_laravel (nome do banco de dados que eu coloquei ao criar o banco de dados para usar no Docker)
+DB_USERNAME=admin  (nome que eu coloquei ao criar o banco de dados para usar no Docker)
+DB_PASSWORD=admin (nome que eu coloquei ao criar o banco de dados para usar no Docker)
+
+Pronto, a conexão com o banco de dados foi estabelecida.
+
+Depois disso, abra o terminal, digite php artisan migrate
+
+Depois ir no programa DOCKER e inicializar o banco de dados para esse projeto
+Depois ir no programa DBEAVER e configurar uma nova conexão, clicar no simbolo + que está
+embaixo do menu Arquivo, selecione PostgreSQL
+
+CAMPOS:
+NOME DE USUARIO - coloque o mesmo nome do powershell (admin)
+SENHA - coloque o mesmo nome do powershell (admin)
+
+Na aba PostgreSQL - marque a opção EXIBIR TODOS OS BANCOS DE DADOS
+
+
+
+

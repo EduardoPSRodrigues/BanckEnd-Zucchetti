@@ -1,0 +1,15 @@
+OBS:Quando clonar um projeto é preciso dar um compose install para instalar as bibliotecas
+------------------------------
+
+1 criar um projeto com o comando composer create-project laravel/laravel nome_do_projeto
+
+2 Agora não usaremos mais o XAMPP, o LARAVEL tem um servidor nele, para rodar o servidor, use o comando
+php artisan serve
+
+3 Criar o controller com o comando php artisan make:controller NomeDoController
+3.1 Criar as rotas
+
+4 Criar uma migration php artisan make:migration create_users_table
+5 Rodar a migration php artisan migrate
+
+

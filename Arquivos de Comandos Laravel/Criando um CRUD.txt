@@ -1,21 +1,24 @@
-1 - Começa pela migration
-     php artisan make:migration create_races_table
+Começa pela migration
+	php artisan make:migration create_races_table
 
-  Vai no arquivo e monta como que a tabela tem que ser
+Vai no arquivo e monta como que a tabela tem que ser
         Schema::create('races', function (Blueprint $table) {
             $table->id();
             $table->string('name', 50);
             $table->timestamps();
         });
 
-  Depois no terminal digito
-     php artisan migrate 
+Depois no terminal digito
+	php artisan migrate 
 
 Crio um controller com o nome desejado 
-   php artisan make:controller RaceController
+	php artisan make:controller RaceController
 
 Faço as rotas no routes
-   Route::post('races', [RaceController::class, 'store']);
+	Route::post('races', [RaceController::class, 'store']);
 
 Criar o Models
 	php artisan make:model Race
+
+Colocar tambem o fillable para especificar quais campos deseja cadastrar
+	protected $fillable = ['name'];

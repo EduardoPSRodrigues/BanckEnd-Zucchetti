@@ -8,6 +8,7 @@ php artisan serve
 
 3 Criar o controller com o comando php artisan make:controller NomeDoController
 3.1 Criar as rotas
+3.2 Criar o models (nome sempre no singular) php artisan make:model Pet
 
 4 Criar uma migration php artisan make:migration create_users_table
 5 Rodar a migration php artisan migrate

@@ -6,11 +6,19 @@ OBS:Quando clonar um projeto é preciso dar um compose install para instalar as 
 2 Agora não usaremos mais o XAMPP, o LARAVEL tem um servidor nele, para rodar o servidor, use o comando
 php artisan serve
 
-3 Criar o controller com o comando php artisan make:controller NomeDoController
-3.1 Criar as rotas
-3.2 Criar o models (nome sempre no singular) php artisan make:model Pet
+Criar uma migration php artisan make:migration create_users_table
+Abrir a migration criada e colocar os campos que tem nessa tabela
+Depois php artisan migrate para criar as tabelas
 
-4 Criar uma migration php artisan make:migration create_users_table
+Criar o models (nome sempre no singular) php artisan make:model Pet
+Abrir o arquivo e colocar o protected $fillable = ['name','description']; para que eu possa alterar essas informações no post
+
+Criar o controller com o comando php artisan make:controller NomeDoController
+
+3.1 Criar as rotas
+3.2 
+
+4 
 5 Rodar a migration php artisan migrate
 
 

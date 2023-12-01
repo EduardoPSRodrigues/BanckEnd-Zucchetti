@@ -2,8 +2,11 @@
 
 use App\Http\Controllers\AchievementController;
 use App\Http\Controllers\AssetController;
+use App\Http\Controllers\AvaliationController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\MarkerController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductMarkerController;
 use App\Http\Controllers\ProductRequirementController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,3 +36,15 @@ Route::get('asset', [AssetController::class, 'index']);
 Route::post('asset', [AssetController::class, 'store']);
 Route::put('asset/{id}', [AssetController::class, 'update']);
 Route::delete('asset/{id}', [AssetController::class, 'destroy']);
+
+//Route::resource('avaliations', \App\Http\Controllers\AvaliationController::class);
+
+Route::get('avaliations', [AvaliationController::class, 'index']);
+Route::post('avaliations', [AvaliationController::class, 'store']);
+Route::put('avaliations/{id}', [AvaliationController::class, 'update']);
+Route::delete('avaliations/{id}', [AvaliationController::class, 'destroy']);
+
+Route::get('markers', [MarkerController::class, 'index']);
+Route::post('markers', [MarkerController::class, 'store']);
+
+Route::post('product_markers', [ProductMarkerController::class, 'store']);

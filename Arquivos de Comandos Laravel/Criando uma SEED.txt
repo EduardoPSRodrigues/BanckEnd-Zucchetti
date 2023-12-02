@@ -1,0 +1,10 @@
+responsavel por popular o banco de dados
+
+php artisan make:seed (Nome do arquivo - Exemplo: GenderSeeder)
+
+o arquivo estará na pasta database/seeders
+
+Depois que colocar o codigo no arquivo, tem que ir no DatabaseSeeder.php e configurar para 
+chamar essa função, lembrando de importar tudo
+
+Depois executar o comando php artisan db:seed

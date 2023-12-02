@@ -14,6 +14,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        //Por padrão já vem configurado quando se cria um projeto, pois isso não houve a necessidade de criar
+        //um UserSeeder como no caso do Gender
         if(!UserModel::count())
         {
             UserModel::factory(10)->create();

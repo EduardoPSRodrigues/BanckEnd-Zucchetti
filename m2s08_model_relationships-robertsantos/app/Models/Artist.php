@@ -17,20 +17,20 @@ class Artist extends Model
         'birthdate',
         'bio',
         'is_singer',
-        //'favorite_instrument_id',
+        'favorite_instrument_id',
     ];
 
     // protected $hidden = ['favorite_instrument_id'];
 
-    // /**
-    //  * Get the instrument that owns the Artist
-    //  *
-    //  * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-    //  */
-    // public function instrument(): BelongsTo
-    // {
-    //     return $this->belongsTo(Instrument::class, 'favorite_instrument_id', 'id');
-    // }
+    //
+    //   Get the instrument that owns the Artist
+    //
+    //   @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+    //
+     public function instrument(): BelongsTo
+     {
+         return $this->belongsTo(Instrument::class, 'favorite_instrument_id', 'id');
+     }
 
     // /**
     //  * The roles that belong to the Artist

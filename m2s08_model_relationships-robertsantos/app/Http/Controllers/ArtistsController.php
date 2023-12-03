@@ -57,70 +57,71 @@ class ArtistsController extends Controller
         }
     }
 
-    public function show(string $id)
-    {
-        try {
-            $artist = ArtistModel::with(['instrument', 'genders'])->find($id);
-            return empty($artist)
-                ? $this->error('Artista não encontrado', Response::HTTP_NOT_FOUND)
-                : $this->response($artist, "Artista $artist->name encontrado com sucesso");
-        } catch (\Exception $e) {
-            return $this->error($e->getMessage());
-        }
-    }
+     public function show(string $id)
+     {
+         try {
+            //Trazendo o artista com os instrumentos e generos
+             $artist = ArtistModel::with(['instrument', 'genders'])->find($id);
+             return empty($artist)
+                 ? $this->error('Artista não encontrado', Response::HTTP_NOT_FOUND)
+                 : $this->response($artist, "Artista $artist->name encontrado com sucesso");
+         } catch (\Exception $e) {
+             return $this->error($e->getMessage());
+         }
+     }
 
-    public function update(Request $request, string $id)
-    {
-        try {
+     public function update(Request $request, string $id)
+     {
+         try {
 
-        } catch (\Exception $e) {
-            return $this->error($e->getMessage());
-        }
-    }
+         } catch (\Exception $e) {
+             return $this->error($e->getMessage());
+         }
+     }
 
-    public function destroy(string $id)
-    {
-        try {
-            $artist = ArtistModel::find($id);
-            $artist->instrument->delete();
+     public function destroy(string $id)
+     {
+         try {
+             $artist = ArtistModel::find($id);
+             $artist->instrument->delete();
 
-            $artist->delete();
-        } catch (\Exception $e) {
-            return $this->error($e->getMessage());
-        }
-    }
+             $artist->delete();
+         } catch (\Exception $e) {
+             return $this->error($e->getMessage());
+         }
+     }
 
-    private function setArtist($data)
-    {
-        $payloadArtist = [
-            'name' => $data->name,
-            'birthdate' => Carbon::parse($data->birthdate),
-            'bio' => $data->bio,
-            'is_singer'=> empty($data->is_singer) ? false : $data->is_singer,
-        ];
+     private function setArtist($data)
+     {
+         $payloadArtist = [
+             'name' => $data->name,
+             'birthdate' => Carbon::parse($data->birthdate),
+             'bio' => $data->bio,
+             'is_singer'=> empty($data->is_singer) ? false : $data->is_singer,
+         ];
 
-        return ArtistModel::create($payloadArtist);
-    }
+         return ArtistModel::create($payloadArtist);
+     }
 
-    private function setGenders($genders, ArtistModel $artist)
-    {
-        foreach($genders as $name)
-        {
-            $gender = GenderModel::firstOrCreate(['name' => $name]);
+     private function setGenders($genders, ArtistModel $artist)
+     {
+         foreach($genders as $name)
+         {
+             $gender = GenderModel::firstOrCreate(['name' => $name]);
 
-            ArtistGenderModel::firstOrCreate(
-                [
-                    'artist_id' => $artist->id,
-                    'gender_id'=> $gender->id
-                ]
-            );
-        }
-    }
+             ArtistGenderModel::firstOrCreate(
+                 [
+                     'artist_id' => $artist->id,
+                     'gender_id'=> $gender->id
+                 ]
+             );
+         }
+     }
 
-    private function setInstrument($name, ArtistModel $artist)
-    {
-        $instrument = InstrumentModel::firstOrCreate(['name'=> $name]);
-        $artist->favorite_instrument_id = $instrument->id;
-        $artist->save();
-    }
+     private function setInstrument($name, ArtistModel $artist)
+     {
+         $instrument = InstrumentModel::firstOrCreate(['name'=> $name]);
+         $artist->favorite_instrument_id = $instrument->id;
+         $artist->save();
+     }
 }

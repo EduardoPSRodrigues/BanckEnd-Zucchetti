@@ -20,7 +20,7 @@ class Artist extends Model
         'favorite_instrument_id',
     ];
 
-    // protected $hidden = ['favorite_instrument_id'];
+     protected $hidden = ['favorite_instrument_id'];
 
     //
     //   Get the instrument that owns the Artist
@@ -32,19 +32,19 @@ class Artist extends Model
          return $this->belongsTo(Instrument::class, 'favorite_instrument_id', 'id');
      }
 
-    // /**
-    //  * The roles that belong to the Artist
-    //  *
-    //  * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-    //  */
-    // public function genders(): BelongsToMany
-    // {
-    //     return $this->belongsToMany(Gender::class, 'artists_genders', 'artist_id', 'gender_id');
-    // }
+    //
+    //  The roles that belong to the Artist
+    //
+    //  @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    //
+     public function genders(): BelongsToMany
+     {
+         return $this->belongsToMany(Gender::class, 'artists_genders', 'artist_id', 'gender_id');
+     }
 
-    // public function getAgeAttribute(): int
-    // {
-    //     $currDate = Carbon::now();
-    //     return $currDate->diffInYears(Carbon::parse($this->birthdate));
-    // }
+     public function getAgeAttribute(): int
+     {
+         $currDate = Carbon::now();
+         return $currDate->diffInYears(Carbon::parse($this->birthdate));
+     }
 }

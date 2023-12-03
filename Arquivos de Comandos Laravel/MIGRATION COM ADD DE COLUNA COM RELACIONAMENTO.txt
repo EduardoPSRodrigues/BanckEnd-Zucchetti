@@ -1,0 +1,1 @@
+php artisan make:migration alter_artists_table_add_column_favorite_instrument_id_constraint --table=artists

@@ -24,17 +24,19 @@ class PetController extends Controller
             //Diferente de fazer um pet::all que retorna tudo
             //O objetivo disso é que eu quero montar a query para só depois executar o código
             $pets = Pet::query()
+            //Selecionando apenas o que desejo que mostre
             ->select(
                 'id as id_pet',
                 'pets.name as pet_name',
                 'pets.race_id',
                 'pets.specie_id'
                 )
-            #->with('race') // traz todas as colunas
+            //race é o nome do método que eu criei do relacionamento
             ->with(['race' => function ($query) {
                 $query->select('name', 'id');
             }])
-            ->with('specie');
+            #->with('race') // traz todas as colunas
+            ->with('specie'); //outro with para trazer as specie
 
             // verifica se filtro
             if ($request->has('name') && !empty($filters['name'])) {

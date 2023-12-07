@@ -47,17 +47,19 @@ class SendWelcomePet extends Mailable
     }
 
     /**
-     * Get the attachments for the message.
+     * Utilizando para anexar arquivos no email
      *
      * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
     public function attachments(): array
     {
         return [
-           // Attachment::fromPath(public_path('catalogo.pdf'))->as('novidades_da_loja.pdf'),
-           // Attachment::fromPath(public_path('gato.jpg'))
-            #->as('novidades_da_loja.pdf')
-            #->withMime('application/pdf');
+            //Irei enviar dois arquivos, como aqui é um array, estou usando a virgula para separar os documentos
+            //Onde que ta o arquivo que deseja enviar, isso é o fromPath
+            Attachment::fromPath(public_path('catalogo.pdf'))->as('novidades_da_loja.pdf'),
+            Attachment::fromPath(public_path('gato.jpg'))
+            #->as('novidades_da_loja.pdf') é o nome do arquivo que vai aparecer na mensagem
+            #->withMime('application/pdf') significa a extensão do documento caso queira especificar
 
         ];
     }

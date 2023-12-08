@@ -95,6 +95,27 @@ agora tem que criar uma classe de email com o comando php artisan make:mail Send
 
 CONFIGURANDO O MAIL GUN AULA 2 - SEMANA 9 TEMPO DE VIDEO 2H54MIN
 
+_____________________________
+
+Fazendo os relacionamentos entre as tabelas
+
+É sempre no arquivo de MODELS 
+
+_________________________
+
+instalando biblioteca de pdf
+ composer require barryvdh/laravel-dompdf
+__________________
+
+Criando uma classe que executa uma tarefa agendada em um determinado horario
+$ php artisan make:command SendServicePetEmail
+
+o arquivo será criado dentro da pasta app/console 
+configura o arquivo com os detalhes do email e depois vai no arquivo app/console/kernel.php 
+para colocar as configurações de timezone, quanto tempo vai executar o comando, qual a classe do comando
+
+para executar isso tudo, digite php artisan schedule:work
+ou seja, um script ficara verificando e executando esse codigo
 
 
 

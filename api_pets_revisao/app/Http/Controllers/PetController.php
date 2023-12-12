@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\SendWelcomePet;
+use App\Models\People;
 use App\Models\Pet;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
@@ -26,7 +27,7 @@ class PetController extends Controller
             $pets = Pet::query()
             //Selecionando apenas o que desejo que mostre
             ->select(
-                'id as id_pet',
+                'id',
                 'pets.name as pet_name',
                 'pets.race_id',
                 'pets.specie_id'
@@ -36,6 +37,7 @@ class PetController extends Controller
                 $query->select('name', 'id');
             }])
             #->with('race') // traz todas as colunas
+            ->with('vaccines')
             ->with('specie'); //outro with para trazer as specie
 
             // verifica se filtro
@@ -78,19 +80,44 @@ class PetController extends Controller
                 'weight' => 'numeric',
                 'size' => 'required|string|in:SMALL,MEDIUM,LARGE,EXTRA_LARGE',
                 'race_id' => 'required|int',
-                'specie_id' => 'required|int'
+                'specie_id' => 'required|int',
+                'client_id' => 'int'
             ]);
 
             $pet = Pet::create($data);
 
-            Mail::to('eduardo_rodrigues10@estudante.sesisenai.org.br', 'Eduardo Phelipe')
-             ->send(new SendWelcomePet($pet->name, 'Eduardo Phelipe'));
-            //  $pet->name, 'Eduardo Phelipe é o contructor da classe, é por aqui que enviarei informações que
-            //irei capturar no html para usar no email
+            //Verifica se o pet tem dono (client_id)
+            if (!empty($pet->client_id)) {
+
+                //Se tiver dono, vai salvar os dados do cliente que passamos o id e salvar em people
+                $people = People::find($pet->client_id);
+
+                //Pegarei o email no banco de dados e o nome do client e enviarei o email
+                Mail::to($people->email, $people->name)
+                    ->send(new SendWelcomePet($pet->name, 'Eduardo Phelipe'));
+            }
 
             return $pet;
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
     }
+
+    public function destroy($id){
+        $pet = Pet::find($id);
+
+        if(!$pet) return $this->error('Dado não encontrado', Response::HTTP_NOT_FOUND);
+
+        $pet->delete();
+
+        return $this->response('',Response::HTTP_NO_CONTENT);
+
+    }
 }
+
+/*Informações do projeto
+
+Mail::to('eduardo_rodrigues10@estudante.sesisenai.org.br', 'Eduardo Phelipe')
+             ->send(new SendWelcomePet($pet->name, 'Eduardo Phelipe'));
+            //  $pet->name, 'Eduardo Phelipe é o contructor da classe, é por aqui que enviarei informações que
+            //irei capturar no html para usar no email*/

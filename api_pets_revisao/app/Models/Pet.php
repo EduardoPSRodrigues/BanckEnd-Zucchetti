@@ -4,15 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Pet extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     // altera o nome da tabela buscada pelo modelo
     protected $table = 'pets';
 
-    protected $fillable = ['name', 'weight', 'size', 'age', 'race_id', 'specie_id'];
+    protected $fillable = ['name', 'weight', 'size', 'age', 'race_id', 'specie_id', 'client_id'];
 
     protected $hidden = ['created_at','updated_at']; //Esconde essas informações quando fizer um find ou all
 
@@ -29,4 +31,8 @@ class Pet extends Model
         //id é chave primeira da tabela specie e fará referencia com a coluna specie_id da tabela PET
         return $this->hasOne(Specie::class, 'id', 'specie_id');
     }
+
+     public function vaccines(){
+         return $this->hasMany(Vaccine::class);
+     }
 }

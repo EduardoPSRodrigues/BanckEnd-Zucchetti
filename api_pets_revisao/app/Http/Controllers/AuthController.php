@@ -65,11 +65,11 @@ class AuthController extends Controller
 
             $request->user()->tokens()->delete(); //Se o usuario ja tiver um token, eu deleto primeiro depois crio um novo token
 
-            $profile = Profile::find($request->user()->profile_id);
+            $profile = Profile::find($request->user()->profile_id); //Procura na tabela Profile o id do profissional com base nesse comando $request->user()->profile_id e na variavel profile retorna o nome do profile
 
-            $permissionsUser =  $this->permissions[$profile->name];
+            $permissionsUser =  $this->permissions[$profile->name]; //$profile->name é o nome do profile que eu recuperei na variavel $profile. Sendo que em permissionsUser retorna o array das permissões
 
-            $token = $request->user()->createToken('simple', $permissionsUser); //Vai registrar o acesso do token
+            $token = $request->user()->createToken('simple', $permissionsUser); //Vai registrar o acesso do token - permissionsUser são a habilidades que o usuario vai ter, se logar como admin terá as permissões de admin e assim sucessivamente
 
             return $this->response('Autorizado', 201, [
                 'token' => $token->plainTextToken

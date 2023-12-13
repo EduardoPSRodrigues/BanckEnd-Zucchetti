@@ -1,0 +1,2 @@
+depois que implementar o middleware, tem que ir no thunder client e depois ir em headers e em accept colocar 
+application/json para a resposta aparecer que não foi autenticado

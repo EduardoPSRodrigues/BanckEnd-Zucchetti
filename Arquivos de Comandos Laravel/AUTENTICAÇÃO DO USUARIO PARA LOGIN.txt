@@ -1,0 +1,8 @@
+VAI CRIAR UM AUTH CONTROLLER PARA A AUTENTICAÇÃO
+NÃO PRECISA CRIAR UMA TABELA PARA ELE
+
+em sanctum.php no campo 'expiration' => null, 
+fala quanto tempo o token vai expirar
+
+'expiration' => 60,
+vai expirar daqui a 60 minutos

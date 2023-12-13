@@ -18,29 +18,29 @@ use Illuminate\Support\Facades\Route;
 //Espécie de segurança, agora essas rotas precisam de login para fazer o cadastro, deleção, listagem...
 Route::middleware('auth:sanctum')->group(function () {
 
-    Route::get('races', [RaceController::class, 'index']);
-    Route::post('races', [RaceController::class, 'store']);
+    Route::post('races', [RaceController::class, 'store'])->middleware(['ability:create-races']);
+    Route::get('races', [RaceController::class, 'index'])->middleware(['ability:get-races']);
 
-    Route::get('species', [SpecieController::class, 'index']);
-    Route::post('species', [SpecieController::class, 'store']);
-    Route::delete('species/{id}', [SpecieController::class, 'destroy']);
+    Route::post('species', [SpecieController::class, 'store'])->middleware(['ability:create-species']);
+    Route::get('species', [SpecieController::class, 'index'])->middleware(['ability:get-species']);
+    Route::delete('species/{id}', [SpecieController::class, 'destroy'])->middleware(['ability:delete-species']);
     //->middleware(['ability:delete-species']);
 
-    Route::get('pets', [PetController::class, 'index']);
-    Route::post('pets', [PetController::class, 'store']);
-    Route::delete('pets/{id}', [PetController::class, 'destroy']);
+    Route::get('pets', [PetController::class, 'index'])->middleware(['ability:get-pets']);
+    Route::post('pets', [PetController::class, 'store'])->middleware(['ability:create-pets']);
+    Route::delete('pets/{id}', [PetController::class, 'destroy'])->middleware(['ability:delete-pets']);
 
 
     //Rota diferente do normal, sendo que é para exportar um documento pdf
-    Route::get('pets/export', [PetsReportController::class, 'export']);
+    Route::get('pets/export', [PetsReportController::class, 'export'])->middleware(['ability:export-pdf-pets']);
 
-    Route::post('clients', [ClientController::class, 'store']); //->middleware(['ability:create-clients']);
-    Route::get('clients', [ClientController::class, 'index']); //->middleware(['ability:get-clients']);
+    Route::post('clients', [ClientController::class, 'store'])->middleware(['ability:create-clients']);
+    Route::get('clients', [ClientController::class, 'index'])->middleware(['ability:get-clients']);
 
-    Route::post('profissionals', [ProfessionalController::class, 'store']); //->middleware(['ability:create-profissionals']);
-    Route::get('profissionals', [ProfessionalController::class, 'index']); //->middleware(['ability:get-profissionals']);
+    Route::post('profissionals', [ProfessionalController::class, 'store'])->middleware(['ability:create-profissionals']);
+    Route::get('profissionals', [ProfessionalController::class, 'index'])->middleware(['ability:get-profissionals']);
 
-    Route::post('vaccines', [VaccineController::class, 'store']);//->middleware(['ability:create-vaccines']);
+    Route::post('vaccines', [VaccineController::class, 'store'])->middleware(['ability:create-vaccines']);
 
     Route::post('logout', [AuthController::class, 'logout']);
 

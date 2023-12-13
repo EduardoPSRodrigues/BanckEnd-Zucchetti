@@ -25,6 +25,7 @@ class PetController extends Controller
             //Diferente de fazer um pet::all que retorna tudo
             //O objetivo disso é que eu quero montar a query para só depois executar o código
             $pets = Pet::query()
+
             //Selecionando apenas o que desejo que mostre
             ->select(
                 'id',
@@ -32,12 +33,24 @@ class PetController extends Controller
                 'pets.race_id',
                 'pets.specie_id'
                 )
+
             //race é o nome do método que eu criei do relacionamento
             ->with(['race' => function ($query) {
                 $query->select('name', 'id');
             }])
             #->with('race') // traz todas as colunas
-            ->with('vaccines')
+
+            //Encadear um relacionamento, estou trazendo os dados d profissional e da pessoa que aplicou a vacina
+            //basta colocar esse ponto e o nome da variável
+            //LEMBRANDO QUE TEM QUE TER O RELACIONAMENTO NO MODEL DA VACINA
+            ->with('vaccines.professional.people')
+
+             /*
+                ->with(['vaccines.professional.people' => function ($query) {
+                    $query->orderBy('created_at', 'desc'); // mostra exemplos
+                }])
+                */
+
             ->with('specie'); //outro with para trazer as specie
 
             // verifica se filtro

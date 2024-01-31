@@ -6,3 +6,12 @@ e colar o seguinte codigo na categoria middlewareAliases(colar no final, depois 
 
 	'abilities' => \Laravel\Sanctum\Http\Middleware\CheckAbilities::class,
         'ability' => \Laravel\Sanctum\Http\Middleware\CheckForAnyAbility::class,
+
+em auth.php fala que o modelo que o middleware vai usar é o modelo do User:class
+
+ 'providers' => [
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+
+para alterar o tempo que o token é expirado tem que ir no arquivo sanctum.php em config

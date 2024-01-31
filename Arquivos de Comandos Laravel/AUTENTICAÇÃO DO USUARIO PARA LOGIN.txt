@@ -6,3 +6,6 @@ fala quanto tempo o token vai expirar
 
 'expiration' => 60,
 vai expirar daqui a 60 minutos
+
+para pegar o nome do usuario basta fazer 
+'name' => Auth::user()->name,

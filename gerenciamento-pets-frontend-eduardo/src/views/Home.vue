@@ -13,6 +13,7 @@
 </template>
 
 <script>
+//Importando o serviço
 import SpecieService from '../services/SpecieService'
 
 export default {
@@ -26,16 +27,18 @@ export default {
         this.$router.push(`/pets/${id}`);
     }
   },
+  //Executado assim que a tela é montada
   mounted() {
+    //Chamando a classe do serviço e o método que desejo executar
     SpecieService.getAllSpecies()
       .then((data) => {
         this.species = data
       })
       .catch((error) => {
-        alert('Houve um erro')
+        alert('Houve um erro. O servidor backend esta fora do ar.')
       })
       .finally(() => {
-        // ver exemplo
+        // Usando normalmente para pausar o loading
       })
   }
 }

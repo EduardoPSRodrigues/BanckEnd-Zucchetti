@@ -2,12 +2,13 @@
   <v-navigation-drawer :rail="rail" permanent>
     <v-list>
       <v-list-item
-        prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-        title="Douglas Cavalcante"
-        subtitle="doug@gmail.com"
+        prepend-avatar="https://pics.craiyon.com/2023-10-10/eaccdd9dc1694523a22130b15534cad6.webp"
+        title="Eduardo Phelipe"
+        subtitle="eduardo@gmail.com"
       ></v-list-item>
     </v-list>
 
+    <!-- Linha para separar os dados do usuário -->
     <v-divider></v-divider>
 
     <v-list density="compact" nav>

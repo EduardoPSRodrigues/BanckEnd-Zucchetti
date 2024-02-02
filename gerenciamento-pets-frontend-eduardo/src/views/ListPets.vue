@@ -55,6 +55,7 @@ export default {
     }
   },
   mounted() {
+    //Pegando o id da url
     PetService.getAllPets(this.$route.params.id)
       .then((data) => {
         this.pets = data

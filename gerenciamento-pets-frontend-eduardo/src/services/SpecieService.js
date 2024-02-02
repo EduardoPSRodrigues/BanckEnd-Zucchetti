@@ -12,4 +12,5 @@ class SpecieService {
     }
 }
 
+//Exportando e estanciando a classe
 export default new SpecieService();

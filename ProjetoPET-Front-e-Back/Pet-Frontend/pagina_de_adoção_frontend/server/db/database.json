@@ -1,0 +1,40 @@
+{
+  "pets": [
+    {
+      "id": 1,
+      "name": "Bolinha",
+      "age": 2,
+      "gender": "Female",
+      "size": "Small",
+      "breed": "Mixed Breed",
+      "species": "Dog",
+      "story": "Bolinha is a playful little dog rescued from the streets.",
+      "status": "Available for adoption",
+      "photo": "https://vale.com/documents/d/guest/pipoca-1"
+    },
+    {
+      "id": 2,
+      "name": "Frajola",
+      "age": 3,
+      "gender": "Male",
+      "size": "Medium",
+      "breed": "Siamese",
+      "species": "Cat",
+      "story": "Frajola is a very curious cat and loves playing with paper balls.",
+      "status": "For adoption",
+      "photo": "https://vale.com/documents/d/guest/_u1a6794-jpg"
+    },
+    {
+      "id": 3,
+      "name": "Mel",
+      "age": 1,
+      "gender": "Female",
+      "size": "Small",
+      "breed": "Persian",
+      "species": "Cat",
+      "story": "Mel is a very affectionate kitten abandoned and looking for a loving home.",
+      "status": "Available for adoption",
+      "photo": "https://vale.com/documents/d/guest/brigite_1-png"
+    }
+  ]
+}

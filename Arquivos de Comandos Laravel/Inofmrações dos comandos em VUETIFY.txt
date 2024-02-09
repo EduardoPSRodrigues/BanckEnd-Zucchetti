@@ -1,0 +1,2 @@
+<!-- v-row deixa os tres inputs na mesma linha Sendo que o tamanho do v-row é 12, entao o md do nome é 8 e os demais é 4 
+    para dar a soma 12 e ficar distribuido igual colocar em v-col-->

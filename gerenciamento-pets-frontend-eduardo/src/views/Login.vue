@@ -37,6 +37,7 @@
           v-model="password"
         />
   
+        <!-- block é para usar todo o espaço disponível -->
         <v-btn
           block
           class="mb-8"
@@ -72,9 +73,9 @@
               })
               .then((data) => {
                   api.defaults.headers.common['Authorization'] = `Bearer ${data.data.token}` 
-                  localStorage.setItem("@token_petshop", data.data.token)
+                  localStorage.setItem("@token_petshop", data.data.token) //armazenando o token
                   localStorage.setItem("@permissions_petshop", JSON.stringify(data.data.permissions))
-                  this.$router.push("/home")
+                  this.$router.push("/home") //redireciona para a tela home
               })
               .catch((error) => {
                   console.log(error)

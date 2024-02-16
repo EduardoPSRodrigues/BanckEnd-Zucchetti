@@ -88,7 +88,7 @@ import AuthenticationService from '../services/AuthenticationService'
             })
             .catch((error) => {
                 console.log(error)
-               this.showError = true
+               this.showError = true //Aparece a mensagem de erro na tela
             })   
         }
     }

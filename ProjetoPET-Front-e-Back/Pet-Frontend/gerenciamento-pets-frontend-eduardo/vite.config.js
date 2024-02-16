@@ -8,6 +8,7 @@ export default defineConfig({
   plugins: [
     vue(),
   ],
+  //Plugin para o teste unitário entender os componentes do vuetify e tem que instalar uma biblioteca do vitest resize observer
   test: {
     globals: true,
     environment: 'jsdom',

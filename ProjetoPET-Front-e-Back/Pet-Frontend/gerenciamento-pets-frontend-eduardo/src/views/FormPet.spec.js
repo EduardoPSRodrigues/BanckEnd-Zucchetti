@@ -66,8 +66,8 @@ describe('Tela de cadastro de pet', () => {
             }
         })
 
-        
-        component.getComponent(concatId("input-name")).setValue("Totozinho") //Criou uma função no utils chamada concatId para facilitar o data-test
+
+        component.getComponent(concatId("input-name")).setValue("Totozinho")
         component.getComponent(concatId("input-age")).setValue("8")
         component.getComponent(concatId("input-weight")).setValue("6.8")
 
@@ -90,7 +90,7 @@ describe('Tela de cadastro de pet', () => {
 
     it('Espera-se que ao submenter o formulário, seja cadastrado o pet com os valores correto', () => {
 
-        const createPet = vi.spyOn(PetService, 'createPet').mockResolvedValue({}) //Mock esta vazio pois nao fazemos uso dessa requisição quando é criado um pet
+        const createPet = vi.spyOn(PetService, 'createPet').mockResolvedValue({})
 
         const component = mount(FormPet, {
             global: {

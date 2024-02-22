@@ -17,7 +17,6 @@ global.ResizeObserver = require('resize-observer-polyfill')
 describe("Tela Home", () => {
      
      vi.spyOn(SpecieService, 'getAllSpecies').mockResolvedValue([
-        //Não precisa considerar como esta cadastrado no backend e sim qual é o formato do array
         {
             id: 1,
             name: 'Cachorro'
@@ -68,6 +67,6 @@ describe("Tela Home", () => {
         
         const cards = component.findAll("[data-test='card-item']")
         
-        expect(cards).toHaveLength(3) //Contar se contou 3 cards
+        expect(cards).toHaveLength(3)
     })
 })

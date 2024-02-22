@@ -1,8 +1,7 @@
 <template>
-  <h1>Minhas tarefas</h1>
+  <h1>Minha tarefas</h1>
   <span v-if="messageError">{{messageError}}</span>
   <form @submit.prevent="handleAddItem">
-    <!-- data-test variável para realizar o teste no input -->
     <input placeholder="Digite sua tarefa" v-model="description" data-test="input-description" />
     <button data-test="submit-button" type="submit">Cadastrar</button>
   </form>
@@ -28,7 +27,7 @@ export default {
       if (this.description.length < 5) {
         this.messageError = "A descrição é pequena demais."
       } else {
-        this.list = [...this.list, this.description] //Pega tudo que tem dentro do array list e acrescenta o description
+        this.list = [...this.list, this.description]
         this.description = ''
       }
     }

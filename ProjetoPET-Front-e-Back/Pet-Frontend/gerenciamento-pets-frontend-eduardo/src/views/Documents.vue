@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from 'axios'
 
 export default {
   data() {
@@ -60,35 +60,34 @@ export default {
       selectedFile1: null,
       selectedFile2: null,
       selectedFile3: null,
-      selectedFile4: null,
-    };
+      selectedFile4: null
+    }
   },
   methods: {
-    async submitDocuments() {
-      const formData = new FormData();
-            formData.append('description', 'documentos');
-
-            console.log(JSON.stringify(this.selectedFile1[0]))
-      formData.append('file', this.selectedFile1[0]);
-   
+    async handleUploadFile(description, file, key) {
       try {
-        const response = await axios.post('http://localhost:8000/api/upload', formData, {
+        const formData = new FormData()
+
+        formData.append('description', description)
+        formData.append('file', file)
+        formData.append('id', this.$route.params.id)
+        formData.append('key', key)
+
+        await axios.post('http://localhost:8000/api/upload', formData, {
           headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-        
-        console.log('Resposta do servidor:', response.data);
-        
-        // Limpar os campos de seleção após o envio
-        this.selectedFile1 = null;
-        this.selectedFile2 = null;
-        this.selectedFile3 = null;
-        this.selectedFile4 = null;
+            'Content-Type': 'multipart/form-data'
+          }
+        })
       } catch (error) {
-        console.error('Erro ao enviar documentos:', error);
+        console.error('Erro ao enviar documentos:', error)
       }
     },
-  },
-};
+    async submitDocuments() {
+      this.handleUploadFile('Cpf do cliente', this.selectedFile1[0], 'cpf')
+      this.handleUploadFile('RG do cliente', this.selectedFile2[0], 'rg')
+      this.handleUploadFile('Comprovante de residencia', this.selectedFile3[0], 'document_address')
+      this.handleUploadFile('Termo de adoação', this.selectedFile4[0], 'term_adoption')
+    }
+  }
+}
 </script>

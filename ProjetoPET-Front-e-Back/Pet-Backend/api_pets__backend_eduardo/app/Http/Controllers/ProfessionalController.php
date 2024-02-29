@@ -61,7 +61,7 @@ class ProfessionalController extends Controller
 
             if($search) {
                 $professionals
-                ->orWhere("register", 'ilike', "%$search%")
+                ->orWhere("register", $search)
                 ->orWhere("speciality", 'ilike', "%$search%");
             }
 

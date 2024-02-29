@@ -2,13 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePetRequest;
 use App\Mail\SendWelcomePet;
-use App\Models\Client;
+use Illuminate\Support\Str;
+
+use App\Models\File;
 use App\Models\People;
 use App\Models\Pet;
+
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
+
 use Symfony\Component\HttpFoundation\Response;
 
 class PetController extends Controller
@@ -45,7 +52,6 @@ class PetController extends Controller
                 */
                 ->with('specie');
 
-
             // verifica se filtro
             if ($request->has('name') && !empty($filters['name'])) {
                 $pets->where('name', 'ilike', '%' . $filters['name'] . '%');
@@ -76,32 +82,22 @@ class PetController extends Controller
         }
     }
 
-    public function store(Request $request)
+    private function sendWelcomeEmailToClient(Pet $pet) {
+        if (!empty($pet->client_id)) {
+            $people = People::find($pet->client_id);
+            Mail::to($people->email, $people->name)
+                ->send(new SendWelcomePet($pet->name, 'Henrique Douglas'));
+        }
+    }
+
+    public function store(StorePetRequest $request)
     {
         try {
             // rebecer os dados via body
-            $data = $request->all();
+            $body = $request->all();
+            $pet = Pet::create($body);
 
-            $request->validate([
-                'name' => 'required|string|max:150',
-                'age' => 'int',
-                'weight' => 'numeric',
-                'size' => 'required|string|in:SMALL,MEDIUM,LARGE,EXTRA_LARGE', // melhorar validacao para enum
-                'race_id' => 'required|int',
-                'specie_id' => 'required|int',
-                'client_id' => 'int'
-            ]);
-
-            $pet = Pet::create($data);
-
-            if (!empty($pet->client_id)) {
-
-                $people = People::find($pet->client_id);
-
-                Mail::to($people->email, $people->name)
-                    ->send(new SendWelcomePet($pet->name, 'Henrique Douglas'));
-            }
-
+            $this->sendWelcomeEmailToClient($pet);
             return $pet;
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
@@ -119,4 +115,69 @@ class PetController extends Controller
         return $this->response('', Response::HTTP_NO_CONTENT);
     }
 
+    public function show($id)
+    {
+        $pet = Pet::find($id);
+
+        if (!$pet) return $this->error('Dado não encontrado', Response::HTTP_NOT_FOUND);
+
+        return $pet;
+    }
+
+
+    public function update($id, Request $request)
+    {
+        $body = $request->all();
+
+        $pet = Pet::find($id);
+
+        if (!$pet) return $this->error('Dado não encontrado', Response::HTTP_NOT_FOUND);
+
+        $request->validate([
+            'name' => 'string|max:150',
+            'age' => 'int',
+            'weight' => 'numeric',
+            'size' => 'string|in:SMALL,MEDIUM,LARGE,EXTRA_LARGE', // melhorar validacao para enum
+            'race_id' => 'int',
+            'specie_id' => 'int',
+            'client_id' => 'int'
+        ]);
+
+        $pet->update($body);
+        $pet->save();
+
+        return $pet;
+    }
+
+    public function upload(Request $request)
+    {
+        $createds = [];
+
+        if ($request->has('files')) {
+            foreach ($request->file('files') as $file) {
+
+                $description =  $request->input('description');
+
+                $slugName = Str::of($description)->slug();
+                $fileName = $slugName . '.' . $file->extension();
+
+                $pathBucket = Storage::disk('s3')->put('documentos', $file);
+                $fullPathFile = Storage::disk('s3')->url($pathBucket);
+
+                $fileCreated = File::create(
+                    [
+                        'name' => $fileName,
+                        'size' => $file->getSize(),
+                        'mime' => $file->extension(),
+                        'url' => $pathBucket
+                    ]
+                );
+
+                array_push($createds, $fileCreated);
+            }
+        }
+
+        return $createds;
+
+    }
 }

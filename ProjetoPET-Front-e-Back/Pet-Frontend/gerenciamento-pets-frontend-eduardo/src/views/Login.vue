@@ -80,7 +80,7 @@ export default {
           console.log('ENTREIIII AQUIII')
 
           api.defaults.headers.common['Authorization'] = `Bearer ${data.data.token}`
-          localStorage.setItem('@token_petshop', data.data.token) //Salvando informações no local storage
+          localStorage.setItem('@token_petshop', data.data.token)
           localStorage.setItem('@permissions_petshop', JSON.stringify(data.data.permissions))
           localStorage.setItem('@name', data.data.name)
           localStorage.setItem('@profile', data.data.profile)

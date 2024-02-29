@@ -11,6 +11,11 @@
     <v-divider></v-divider>
 
     <v-list density="compact" nav>
+
+       <router-link to="/dashboard">
+        <v-list-item prepend-icon="mdi-folder" title="Dashboard" value="dashboard"> </v-list-item>
+      </router-link>
+
       <router-link to="/home">
         <v-list-item prepend-icon="mdi-folder" title="Home" value="home"> </v-list-item>
       </router-link>
@@ -54,7 +59,7 @@ export default {
   data(){
     return {
       permissions: JSON.parse(localStorage.getItem("@permissions_petshop")),
-      name: localStorage.getItem("@name"), //pegando o nome do local storage
+      name: localStorage.getItem("@name"),
       profile: localStorage.getItem("@profile"),
       loading: false
     }

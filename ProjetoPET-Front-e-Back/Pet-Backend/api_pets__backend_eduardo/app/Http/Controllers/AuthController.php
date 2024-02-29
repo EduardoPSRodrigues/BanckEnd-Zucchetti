@@ -24,7 +24,10 @@ class AuthController extends Controller
             'get-pets',
             'delete-pets',
             'create-profissionals',
-            'get-profissionals'
+            'get-profissionals',
+            'create-users',
+            'export-pdf-pets',
+            'create-vaccines'
         ],
         'RECEPCIONISTA' => [
             'create-pets',
@@ -33,7 +36,8 @@ class AuthController extends Controller
             'export-pdf-pets',
             'create-clients',
             'get-clients',
-            'get-species'
+            'get-species',
+            'get-races'
         ],
         'VETERINARIO' => [
             'create-races',
@@ -65,16 +69,15 @@ class AuthController extends Controller
             }
 
             $request->user()->tokens()->delete();
-
             $profile = Profile::find($request->user()->profile_id);
-
             $permissionsUser =  $this->permissions[$profile->name];
-
             $token = $request->user()->createToken('simple', $permissionsUser);
 
             return $this->response('Autorizado', 201, [
                 'token' => $token->plainTextToken,
-                'permissions' => $permissionsUser
+                'permissions' => $permissionsUser,
+                'name' =>  $request->user()->name,
+                'profile' => $profile->name
             ]);
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);

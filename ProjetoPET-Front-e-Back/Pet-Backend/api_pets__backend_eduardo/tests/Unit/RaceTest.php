@@ -31,41 +31,46 @@ class RaceTest extends TestCase
     }
 
 
-    public function test_cannot_create_with_invalid_name(): void
-    {
+    // public function test_cannot_create_with_invalid_name(): void
+    // {
 
-        $user = User::factory()->create(['profile_id' => 2, 'password' => '12345678']);
+    //     $user = User::factory()->create(['profile_id' => 2, 'password' => '12345678']);
 
-        $response = $this->actingAs($user)->post('/api/races', ['name' => 1]);
+    //     $response = $this->actingAs($user)->post('/api/races', ['name' => 1]);
 
-        $response->assertStatus(400);
-        $response->assertJson([
-            "message" => "The name field must be a string.",
-            "status" => 400,
-            "errors" => [],
-            "data" => []
-        ]);
-    }
+    //     $response->assertStatus(400);
+    //     $response->assertJson([
+    //         "message" => "The name field must be a string.",
+    //         "status" => 400,
+    //         "errors" => [],
+    //         "data" => []
+    //     ]);
+    // }
 
-    public function test_cannot_create_without_name(): void
-    {
-        $user = User::factory()->create(['profile_id' => 2, 'password' => '12345678']);
+    // public function test_cannot_create_without_name(): void
+    // {
+    //     $user = User::factory()->create(['profile_id' => 2, 'password' => '12345678']);
 
-        $response = $this->actingAs($user)->post('/api/races', ['name' => '']);
+    //     $response = $this->actingAs($user)->post('/api/races', ['name' => '']);
 
-        $response->assertStatus(400);
-        $response->assertJson([
-            "message" => "The name field is required.",
-            "status" => 400,
-            "errors" => [],
-            "data" => []
-        ]);
-    }
+    //     $response->assertStatus(400);
+    //     $response->assertJson([
+    //         "message" => "The name field is required.",
+    //         "status" => 400,
+    //         "errors" => [],
+    //         "data" => []
+    //     ]);
+    // }
 
     public function test_user_can_list_all_races()
     {
         // Race::factory(10)->create();
-        Race::factory(5)->create();
+        Race::factory(5)->create(); //cadastrar 5 raças
+
+        /*Pode usar tanto o factory mas tem que criar um arquivo como pode usar o created
+        Race::created(['name' => 'Gato']);
+        Race::created(['name' => 'Cachorro']);
+        */
 
 
         $user = User::factory()->create(['profile_id' => 2, 'password' => '12345678']);

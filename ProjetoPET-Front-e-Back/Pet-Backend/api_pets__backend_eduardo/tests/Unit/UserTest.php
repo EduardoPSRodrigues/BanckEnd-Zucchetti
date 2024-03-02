@@ -14,12 +14,13 @@ use Tests\TestCase;
 class UserTest extends TestCase
 {
     /**
-     * A basic feature test example.
+     * Como se alguem estivesse preenchendo os dados no insomnia e fazendo a requisição
      */
 
     public function test_user_admin_can_done_login()
     {
 
+        /*Fazendo uma requisição post para /api/login e passando no body o email e password */
         $response = $this->post('/api/login', [
             'email' => env("DEFAULT_EMAIL"),
             'password' => env("DEFAULT_PASSWORD")
@@ -28,11 +29,15 @@ class UserTest extends TestCase
         // Verificar se o status code está como esperado
         $response->assertStatus(201);
 
+        /*Verifica se a resposta retornou um JSON e se os campos vieram corretamente, se tem aquilo
+         assertJson verifica se tem o campo se tiver mais campos e nao esta assinalado no teste nao tem problema
+         retorna verdadeiro
+        O assertExactJson verifica exatamente todos os campos da requisição */
         $response->assertJson([
             "message" => "Autorizado",
             "status" => 201,
             'data' => [
-                "token" => true,
+                "token" => true, //se veio algum valor ele vai aceitar por conta do true
                 "permissions" => true,
                 "name" => true,
                 "profile" => "ADMIN"
@@ -76,7 +81,7 @@ class UserTest extends TestCase
     {
 
 
-        $user = User::factory()->create(['profile_id' => 2, 'password' => '12345678']);
+        $user = User::factory()->create(['profile_id' => 2, 'password' => '12345678']); //cria um usuario fake por causa do factory ou seja apenas o nome e o email pois a senha e o profile eu falei qual dado que é
 
         $response = $this->post('/api/login', [
             'email' => $user->email,
@@ -154,7 +159,7 @@ class UserTest extends TestCase
 
     /*
 
-    VALIDAR LOGOUT
+    VALIDAR LOGOUT tera que fazer o login e o mesmo usuario faz o logout
 
     public function test_make_logout_in_application(): void
     {
@@ -163,7 +168,7 @@ class UserTest extends TestCase
 
         $user = User::factory()->create(['profile_id' => 1, ]);
 
-        $response = $this->actingAs($user)->post('/api/logout');
+        $response = $this->actingAs($user)->post('/api/logout'); //actingAs é por causa da rota ser privada, ele pede apenas que passe um usuario nesse caso para realizar o procedimento
 
         $response->assertStatus(204);
 

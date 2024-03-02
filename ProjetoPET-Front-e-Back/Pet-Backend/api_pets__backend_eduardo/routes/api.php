@@ -24,7 +24,9 @@ Route::post('pets/adocao', [AdoptionController::class, 'store']);
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('races', [RaceController::class, 'index'])->middleware(['ability:get-races']); // ok
-    Route::post('races', [RaceController::class, 'sendWelcomeEmailToClient'])->middleware(['ability:create-races']); // ok
+    // Route::post('races', [RaceController::class, 'sendWelcomeEmailToClient'])->middleware(['ability:create-races']); // ok
+    Route::post('races', [RaceController::class, 'store'])->middleware(['ability:create-races']); // ok
+
 
     Route::get('species', [SpecieController::class, 'index'])->middleware(['ability:get-species']);
     Route::post('species', [SpecieController::class, 'store'])->middleware(['ability:create-species']);
@@ -57,7 +59,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('adoptions/realized', [AdoptionController::class, 'approve']);
 });
 
-Route::post('upload', [AdoptionController::class, 'upload']);
+Route::post('upload', [AdoptionController::class, 'upload']); //Realizar o upload da imagem para o bucket da AWS
 Route::post('csv', [CsvController::class, 'readCsvFromRequest']);
 
 Route::post('import/peoples', [ImportPeoplesController::class, 'import']);

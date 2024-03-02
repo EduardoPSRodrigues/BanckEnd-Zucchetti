@@ -20,6 +20,7 @@ class SendDocuments extends Mailable
      public $name;
      public $id;
 
+     //Recebendo variaveis no contrutor atraves do SendDocuments
     public function __construct($name, $id)
     {
         $this->name = $name;
@@ -32,7 +33,7 @@ class SendDocuments extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Solicitação de documentos',
+            subject: 'Solicitação de documentos', //Nome do Assunto
         );
     }
 
@@ -42,7 +43,7 @@ class SendDocuments extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mails.sendDocuments',
+            view: 'mails.sendDocuments', //Caminho do arquivo com o template
         );
     }
 

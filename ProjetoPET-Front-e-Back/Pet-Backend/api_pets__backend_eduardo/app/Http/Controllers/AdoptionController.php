@@ -110,6 +110,10 @@ class AdoptionController extends Controller
 
         try {
 
+            /*Iniciando uma transação, ou seja, o laravel vai aceitar tudo ou nada, se ao longo do processo
+            algumas tabelas tiverem sucesso e outras não, o laravel retornará um erro e nao permitirá salvar
+            os dados da tabela que deu certo. Isso é um sistema de segurança, para isso precisa abrir o DB
+            e fechar ele no final do codigo */
             DB::beginTransaction();
 
             // Atualiza o status da adoção para aprovado
@@ -149,13 +153,16 @@ class AdoptionController extends Controller
                 'client_id' => $client->id
             ]);
 
+            //Enviando um email
             Mail::to($people->email, $people->name)
                 ->send(new SendDocuments($people->name, $solicitation->id));
 
+            /*Se tudo der certo, commita todas as alterações nas tabelas */
             DB::commit();
 
             return $client;
         } catch (\Exception $exception) {
+            /*Se alguma coisa deu errado, dá um rollback e cancela as alterações */
             DB::rollBack();
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
@@ -164,35 +171,37 @@ class AdoptionController extends Controller
     public function upload(Request $request)
     {
 
+        //Tipo JSON não suporta enviar arquivo, para isso precisa enviar via Multipart Form
+        $file = $request->file('file'); //Quer pegar um arquivo com o nome que passou no Insomnia
+        $description =  $request->input('description'); //Pegar a variável description do Multipart Form
+        $key =  $request->input('key'); //nome do campo do multiform data do frontend
+        $id =  $request->input('id'); //nome do campo do multiform data do frontend
 
-        $file = $request->file('file');
-        $description =  $request->input('description');
-        $key =  $request->input('key');
-        $id =  $request->input('id');
-
-        /* criar nome amigável arquivo */
-        $slugName = Str::of($description)->slug();
-        $fileName = $slugName . '.' . $file->extension();
+        /* criar nome amigável arquivo - site para manipular string https://laravel.com/docs/10.x/strings */
+        $slugName = Str::of($description)->slug(); //Coloca tudo minusculo e retira o espaço por -
+        $fileName = $slugName . '.' . $file->extension(); //Montar o nome do arquivo, concatenar o nome com a extensão do arquivo
 
         /* Enviar o arquivo para amazon */
-
-        $pathBucket = Storage::disk('s3')->put('documentos', $file);
-        $fullPathFile = Storage::disk('s3')->url($pathBucket);
+        $pathBucket = Storage::disk('s3')->put('documentos', $file); //Quero acessar a configuração de disk da s3 e quero empurrar o arquivo para o nome da pasta que quero usar, senão tiver pasta será criada uma.
+        $fullPathFile = Storage::disk('s3')->url($pathBucket); //Pegar toda a url onde foi armazenado o arquivo
 
         $file = File::create(
             [
                 'name' => $fileName,
-                'size' => $file->getSize(),
-                'mime' => $file->extension(),
+                'size' => $file->getSize(), //Pegar o tamanho do arquivo
+                'mime' => $file->extension(), //Pegar a extensão do arquivo
                 'url' => $fullPathFile
             ]
         );
+
+        /*Para a url ficar disponivel tem que ir no bucket na AWS -> Permissões -> Politica do Bucket -> Editar
+        colar o código da aula 1 - Semana 5 - Modulo 3 */
 
         $solicitation = SolicitationDocument::find($id);
 
         if(!$solicitation) return $this->error('Dado não encontrado', Response::HTTP_NOT_FOUND);
 
-        $solicitation->update([$key => $file->id]);
+        $solicitation->update([$key => $file->id]); //se vier rg, atualiza rg, se for cpf, atualiza cpf com o id
 
         return ['message' => 'Arquivo criado com sucesso'];
     }

@@ -153,6 +153,9 @@ class PetController extends Controller
     {
         $createds = [];
 
+        //Código para fazer o upload de todos os arquivos ao mesmo tempo e para enviar no insomnia
+        // escolhe multipart form e coloca o description e files[] files[] para quantos arquivos quiser enviar
+        //Melhor fazer igual o AdoptionController
         if ($request->has('files')) {
             foreach ($request->file('files') as $file) {
 

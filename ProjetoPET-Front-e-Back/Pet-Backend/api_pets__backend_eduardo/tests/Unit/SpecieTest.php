@@ -18,7 +18,7 @@ class SpecieTest extends TestCase
     {
 
         Specie::factory(15)->create();
-        $this->assertDatabaseCount('species', 15);
+        $this->assertDatabaseCount('species', 15); //Conta se 15 species foram criadas com sucesso
 
         $user = User::factory()->create(['profile_id' => 2, 'password' => '12345678']);
         $response = $this->actingAs($user)->get('/api/species');
@@ -37,9 +37,9 @@ class SpecieTest extends TestCase
     {
         $user = User::factory()->create(['profile_id' => 2, 'password' => '12345678']);
 
-        $response = $this->actingAs($user)->post('/api/species', ['name' => 'Caramelo']);
+        $response = $this->actingAs($user)->post('/api/species', ['name' => 'Caramelo']); //Cadastrei um dado
 
-        $this->assertDatabaseCount('species', 1);
+        $this->assertDatabaseCount('species', 1); //Verifico se tem um dado no banco
         $response->assertStatus(201);
         $response->assertJson([
             'name' => 'Caramelo',
@@ -87,7 +87,7 @@ class SpecieTest extends TestCase
         $response = $this->actingAs($user)->delete("/api/species/$specieCreated->id");
 
         $this->assertDatabaseCount('species', 10);
-        $this->assertDatabaseMissing('species', ['id' => $specieCreated->id]);
+        $this->assertDatabaseMissing('species', ['id' => $specieCreated->id]); //verificar se nao tem mais a specie que foi criado
         $response->assertStatus(204);
     }
 

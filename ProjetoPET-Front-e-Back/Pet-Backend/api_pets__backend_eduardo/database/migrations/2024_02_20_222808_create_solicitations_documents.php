@@ -12,21 +12,21 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('solicitations_documents', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->uuid('id'); //cria um id camuflado com hash
             $table->unsignedBigInteger('client_id');
-            $table->foreign('client_id')->references('id')->on('clients');
+            $table->foreign('client_id')->references('id')->on('clients'); //faz referencia com o id do cliente
 
             $table->unsignedBigInteger('cpf')->nullable();
-            $table->foreign('cpf')->references('id')->on('files');
+            $table->foreign('cpf')->references('id')->on('files'); //faz referencia a tabela com a imagem do arquivo
 
             $table->unsignedBigInteger('rg')->nullable();
-            $table->foreign('rg')->references('id')->on('files');
+            $table->foreign('rg')->references('id')->on('files'); //faz referencia a tabela com a imagem do arquivo
 
             $table->unsignedBigInteger('document_address')->nullable();
-            $table->foreign('document_address')->references('id')->on('files');
+            $table->foreign('document_address')->references('id')->on('files'); //faz referencia a tabela com a imagem do arquivo
 
             $table->unsignedBigInteger('term_adoption')->nullable();
-            $table->foreign('term_adoption')->references('id')->on('files');
+            $table->foreign('term_adoption')->references('id')->on('files'); //faz referencia a tabela com a imagem do arquivo
 
             $table->timestamps();
         });

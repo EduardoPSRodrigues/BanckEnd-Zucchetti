@@ -24,8 +24,8 @@ class ClientTest extends TestCase
 
         $response = $this->actingAs($user)->post('/api/clients', $body);
 
-        $this->assertDatabaseHas('peoples', ['cpf' => $body['cpf'], 'email' => $body['email']]);
-        $this->assertDatabaseCount('clients', 1);
+        $this->assertDatabaseHas('peoples', ['cpf' => $body['cpf'], 'email' => $body['email']]); //como nao sei o id que foi adicionado durante o teste e sei que o cpf e o email sao unicos entao estou usando essas chaves para verificar se foi criado
+        $this->assertDatabaseCount('clients', 1); //como criei apenas um usuario, estou contando se tem 1 client criado
 
         $response->assertStatus(201);
         $response->assertJson([

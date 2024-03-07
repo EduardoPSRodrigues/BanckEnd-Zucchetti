@@ -1,3 +1,6 @@
+<!-- Tem que instalar uma biblioteca de grafico no front end
+npm i vue-chartjs chart.js -->
+
 <template>
   <div class="card">
     <Doughnut :data="chartData" :options="options" />
@@ -8,6 +11,7 @@
 </template>
 
 <script>
+//Importar os elementos dos gráficos
 import {
   Chart as ChartJS,
   ArcElement,
@@ -20,10 +24,12 @@ import {
 import { Doughnut, Bar } from 'vue-chartjs'
 import axios from 'axios'
 
+//Vai configurar os elementos na tela, uma vez por tela
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 export default {
   components: {
+    //Responsavel por conseguir usar no template
     Doughnut,
     Bar
   },
@@ -116,7 +122,7 @@ export default {
   computed: {
     chartData() {
       return {
-        labels: this.response ? this.response.map((item) => item.name) : [],
+        labels: this.response ? this.response.map((item) => item.name) : [], //ponto de interrogaçao pq no primeiro momento ela é null
         datasets: [
           {
             backgroundColor: this.generateHexColors(this.response ? this.response.length : 0),
@@ -128,7 +134,7 @@ export default {
     chartDataBar() {
       return {
         labels: this.responseClients
-          ? this.responseClients.map((item) => this.getMonthName(Number(item.mes)))
+          ? this.responseClients.map((item) => this.getMonthName(Number(item.mes))) //number converte de string para number
           : [],
         datasets: [
           {

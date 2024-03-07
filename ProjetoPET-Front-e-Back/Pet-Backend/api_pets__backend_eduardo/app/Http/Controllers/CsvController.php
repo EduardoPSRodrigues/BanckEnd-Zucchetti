@@ -20,7 +20,7 @@ class CsvController extends Controller
 
             $headers = array_shift($csvData);
 
-            $csvArray = [];
+            $csvArray = []; //as variaveis tem que estar proximas do lugar onde elas serao usadas
             foreach ($csvData as $row) {
                 $csvArray[] = array_combine($headers, $row);
             }

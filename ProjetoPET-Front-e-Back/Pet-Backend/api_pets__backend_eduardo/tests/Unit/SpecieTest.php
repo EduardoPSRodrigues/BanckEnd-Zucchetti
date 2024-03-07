@@ -93,6 +93,7 @@ class SpecieTest extends TestCase
 
     public function test_use_can_delete_specie_with_pet(): void
     {
+        //funcition para verificar o conflito pois nao pode deletar o pet porque a especie esta sendo usada
         $specie = Specie::factory()->create();
         $race = Race::factory()->create();
         $pet  = Pet::factory()->create(['race_id' => $race->id, 'specie_id' => $specie->id]);
@@ -107,6 +108,6 @@ class SpecieTest extends TestCase
             'errors' => [],
             'data' => []
         ]);
-        $this->assertDatabaseHas('species', ['id' =>  $specie->id]);
+        $this->assertDatabaseHas('species', ['id' =>  $specie->id]); //verificando se no banco existe esse id da deleção
     }
 }

@@ -22,19 +22,21 @@ class ImportPeoplesController extends Controller
         try {
             DB::beginTransaction();
             // Verifica se a solicitação contém um arquivo CSV
+            //file foi o mesmo nome dado no insomnia no campo do multipart form data
             if ($request->hasFile('file')) {
-                $file = $request->file('file');
+                $file = $request->file('file'); //pegar o arquivo da requisição e armazenar na variável
 
-                $csvArray = $this->getArrayCsv($file, 4);
+                $csvArray = $this->getArrayCsv($file, 4); //4 significa a quantidade de coluna do arquivo
 
+                //foreach no array para conseguir criar dado por dado na tabela
                 foreach ($csvArray as $item) {
 
                     $peopleExist = People::query()
-                        ->where('cpf', $item['cpf'])
+                        ->where('cpf', $item['cpf']) //tem uma pessoa com esse cpf ou email se tiver nao cadastra
                         ->orWhere('email', $item['email'])
-                        ->first();
+                        ->first(); //retorna em formato de objeto
 
-                    if (!$peopleExist) People::create($item);
+                    if (!$peopleExist) People::create($item); //senao tiver essa pessoa, entao é para cadastrar do contrario nao fazer nada
                 }
 
                 DB::commit();

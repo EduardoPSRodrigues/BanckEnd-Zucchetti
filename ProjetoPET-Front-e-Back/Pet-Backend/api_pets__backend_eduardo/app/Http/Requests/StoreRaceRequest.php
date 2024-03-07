@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 class StoreRaceRequest extends FormRequest
 {
 
-    protected $stopOnFirstFailure = true;
+    protected $stopOnFirstFailure = true; //é para parar no primeiro erro da validação, nao precisa verificar tudo
 
     /**
      * Determine if the user is authorized to make this request.
@@ -16,11 +16,11 @@ class StoreRaceRequest extends FormRequest
 
     public function authorize(): bool
     {
-        return Auth::check();
+        return Auth::check(); //verifica se o usuario tem permissão para executar essa regra
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Colocar a validação dessa classe
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
@@ -31,6 +31,7 @@ class StoreRaceRequest extends FormRequest
         ];
     }
 
+    //customizar as mensagens de erro
     public function messages(): array
     {
         return [

@@ -22,6 +22,7 @@ class RaceController extends Controller
         return $races;
     }
 
+    //Colocar o nome da classe da validação para vincular a essa função
     public function store(StoreRaceRequest $request)
     {
         try {

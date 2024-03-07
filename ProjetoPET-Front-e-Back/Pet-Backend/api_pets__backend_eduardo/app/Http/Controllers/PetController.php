@@ -82,6 +82,7 @@ class PetController extends Controller
         }
     }
 
+    //Função esta privada pois nao terá rota e será acessada apenas aqui para uma função
     private function sendWelcomeEmailToClient(Pet $pet) {
         if (!empty($pet->client_id)) {
             $people = People::find($pet->client_id);

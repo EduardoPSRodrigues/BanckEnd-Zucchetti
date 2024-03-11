@@ -3,8 +3,13 @@ import { saveAs } from "file-saver"
 
 class PetService {
     
-    async createPet(body){
-        const response = await api.post('pets', body)
+    //Avisando para o createPet que vai chegar uma imagem para ele
+    async createPet(body) {
+        const response = await api.post('pets', body, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
         return response.data
     }
 

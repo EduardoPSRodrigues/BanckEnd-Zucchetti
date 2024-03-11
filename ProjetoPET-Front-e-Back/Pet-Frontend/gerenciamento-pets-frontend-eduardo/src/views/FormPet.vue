@@ -18,6 +18,14 @@
       ></v-alert>
 
       <v-row class="mt8">
+        <v-file-input
+          v-model="photo"
+          label="Selecione a foto do pet"
+          placeholder="Escolha um arquivo..."
+          prepend-icon="mdi-file"
+          accept="image/*"
+        ></v-file-input>
+
         <v-col cols="12" md="8">
           <v-text-field
             label="Nome"
@@ -112,6 +120,7 @@ import * as yup from 'yup'
 export default {
   data() {
     return {
+      photo: null,
       name: '',
       age: 1,
       weight: 1,
@@ -154,6 +163,7 @@ export default {
   methods: {
     handleSubmit() {
       try {
+        //Como estamos usando a imagem, estamos passando via formData, essa parte serve apenas para validar as informações
         const body = {
           name: this.name,
           age: this.age,
@@ -166,6 +176,18 @@ export default {
 
         schemaPetForm.validateSync(body, { abortEarly: false })
 
+        const formData = new FormData()
+        // IMPORTANTE PARA ENVIAR UMA IMAGEM TEM QUE PEGAR A POSIÇÃO 0 DO ARRAY PARA ENVIAR A IMAGEM
+        /*Por ser uma imagem tem que ser formData */
+        formData.append('photo', this.photo[0])
+        formData.append('name', this.name)
+        formData.append('age', this.age)
+        formData.append('size', this.size)
+        formData.append('race_id', this.race_id)
+        formData.append('specie_id', this.specie_id)
+        formData.append('weight', this.weight)
+        formData.append('description', this.description)
+
         if (this.petId) {
           PetService.editPet(body, this.petId)
             .then(() => {
@@ -173,7 +195,8 @@ export default {
             })
             .catch(() => alert('Houve um erro ao atualizar o pet'))
         } else {
-          PetService.createPet(body)
+          //Para criar o Pet estamos passando o FormData com as informações
+          PetService.createPet(formData)
             .then(() => {
               this.success = true
 

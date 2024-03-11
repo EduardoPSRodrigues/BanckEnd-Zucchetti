@@ -3,6 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePetRequest;
+use App\Http\Requests\UpdatePetRequest;
+use App\Http\Services\File\CreateFileService;
+use App\Http\Services\Pet\CreateOnePetService;
+use App\Http\Services\Pet\GetOnePetService;
+use App\Http\Services\Pet\SendEmailWelcomeService;
+use App\Http\Services\Pet\UpdateOnePetService;
 use App\Mail\SendWelcomePet;
 use Illuminate\Support\Str;
 
@@ -17,6 +23,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Messenger\SendEmailMessage;
 
 class PetController extends Controller
 {
@@ -38,7 +45,8 @@ class PetController extends Controller
                     'pets.specie_id',
                     'pets.size as size',
                     'pets.weight as weight',
-                    'pets.age as age'
+                    'pets.age as age',
+                    'pets.file_id'
                 )
                 #->with('race') // traz todas as colunas
                 ->with(['race' => function ($query) {
@@ -50,7 +58,8 @@ class PetController extends Controller
                     $query->orderBy('created_at', 'desc'); // mostra exemplos
                 }])
                 */
-                ->with('specie');
+                ->with('specie')
+                ->with('file');
 
             // verifica se filtro
             if ($request->has('name') && !empty($filters['name'])) {
@@ -91,14 +100,35 @@ class PetController extends Controller
         }
     }
 
-    public function store(StorePetRequest $request)
-    {
-        try {
-            // rebecer os dados via body
-            $body = $request->all();
-            $pet = Pet::create($body);
+    // public function store(StorePetRequest $request)
+    // {
+    //     try {
+    //         // rebecer os dados via body
+    //         $body = $request->all();
+    //         $pet = Pet::create($body);
 
-            $this->sendWelcomeEmailToClient($pet);
+    //         $this->sendWelcomeEmailToClient($pet);
+    //         return $pet;
+    //     } catch (\Exception $exception) {
+    //         return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
+    //     }
+    // }
+
+    public function store(
+        StorePetRequest $request,
+        CreateFileService $createFileService,
+        CreateOnePetService $createOnePetService,
+        SendEmailWelcomeService $sendEmailWelcomeService
+    ) {
+        try {
+            $file = $request->file('photo'); //nome da variavel do frontend
+            $body =  $request->input(); //pega todos os campos de dados do front end
+
+            $file = $createFileService->handle('photos', $file, $body['name']);
+            $pet = $createOnePetService->handle([...$body, 'file_id' => $file->id]);
+
+            $sendEmailWelcomeService->handle($pet);
+
             return $pet;
         } catch (\Exception $exception) {
             return $this->error($exception->getMessage(), Response::HTTP_BAD_REQUEST);
@@ -126,28 +156,39 @@ class PetController extends Controller
     }
 
 
-    public function update($id, Request $request)
+    // public function update($id, Request $request)
+    // {
+    //     $body = $request->all();
+
+    //     $pet = Pet::find($id);
+
+    //     if (!$pet) return $this->error('Dado não encontrado', Response::HTTP_NOT_FOUND);
+
+    //     $request->validate([
+    //         'name' => 'string|max:150',
+    //         'age' => 'int',
+    //         'weight' => 'numeric',
+    //         'size' => 'string|in:SMALL,MEDIUM,LARGE,EXTRA_LARGE', // melhorar validacao para enum
+    //         'race_id' => 'int',
+    //         'specie_id' => 'int',
+    //         'client_id' => 'int'
+    //     ]);
+
+    //     $pet->update($body);
+    //     $pet->save();
+
+    //     return $pet;
+    // }
+
+    public function update($id, UpdatePetRequest $request, UpdateOnePetService $updateOnePetService)
     {
-        $body = $request->all();
-
-        $pet = Pet::find($id);
-
-        if (!$pet) return $this->error('Dado não encontrado', Response::HTTP_NOT_FOUND);
-
-        $request->validate([
-            'name' => 'string|max:150',
-            'age' => 'int',
-            'weight' => 'numeric',
-            'size' => 'string|in:SMALL,MEDIUM,LARGE,EXTRA_LARGE', // melhorar validacao para enum
-            'race_id' => 'int',
-            'specie_id' => 'int',
-            'client_id' => 'int'
-        ]);
-
-        $pet->update($body);
-        $pet->save();
-
-        return $pet;
+        try {
+            $body = $request->all();
+            $pet =  $updateOnePetService->handle($id, $body);
+            return $pet;
+        } catch (\Exception $exception) {
+            return $this->error($exception->getMessage(), $exception->getCode()); //retornar o erro com o getCode
+        }
     }
 
     public function upload(Request $request)
